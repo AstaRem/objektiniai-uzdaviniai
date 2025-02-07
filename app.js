@@ -276,3 +276,94 @@ stikline3.ipilti(ispylemIs2);
 const ispylemIs3 = stikline3.ispilti();
 console.log(`ispylem is stikline3: ${ispylemIs3}`);
 
+// 9. Sukurti klasę Grybas. 
+// Sukurti klasę Krepsys. 
+// Krepsys, kuri turi savybę dydis,kuriai konstruktoriuje yra priskiriama reikšmė 500 ir savybę prikrauta (kuri pradžioje lygi 0). 
+// Grybas turi tris savybes, kurios taip pat yra paskaičiuojamos konstruktoriuje: valgomas, sukirmijes, svoris. 
+// Kuriant Grybo objektą jo savybės turi būti atsitiktinai (rand funkcija) priskiriamos taip: 
+// valgomas- true arba false, sukirmijes- true arba false ir svoris- nuo 5 iki 45. 
+
+// Eiti grybauti, t.y. Kurti naujus Grybas objektus, 
+// jeigu nesukirmijęs ir valgomas dėti į Krepsi objektą, 
+// t.y. Vykdyti deti(grybas) metodą kol bus pririnktas pilnas krepšys nesukirmijusių ir valgomų grybų (gali būti truputį daugiau nei dydis).
+console.log(`9 --------`);
+
+function rand(min, max) {
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
+}
+
+function randomBoolean(){
+    return Math.random() <= 0.5 ? true : false;
+}
+
+console.log(randomBoolean());
+console.log(randomBoolean());
+console.log(randomBoolean());
+console.log(randomBoolean());
+console.log(randomBoolean());
+
+class Grybas {
+    constructor(){
+        this.valgomas = randomBoolean();
+        this.sukirmijes = randomBoolean();
+        this.svoris = rand(5, 45);
+    }
+
+}
+
+class Krepsys {
+    constructor(){
+        this.dydis = 500;
+        this.prikrauta = 0;
+    }
+
+    deti(grybas){
+        // this.grybas = grybas;
+        // console.log(this.grybas);
+    console.log(`Grybas valgomas:${grybas.valgomas} ir sukirmijes: ${grybas.sukirmijes}, jo svoris: ${grybas.svoris}`);
+        if(grybas.valgomas && !grybas.sukirmijes) {
+            console.log(`dedam i krepseli`)
+            this.prikrauta += grybas.svoris;
+            console.log(this.prikrauta);
+        } else {
+            console.log(`netinka`)
+        }
+        console.log(`svoris krepselyje: ${this.prikrauta}`)
+        return this.prikrauta;
+    }
+
+    grybauti(){
+        while( this.prikrauta < this.dydis){
+            const grybas = new Grybas();
+            this.deti(grybas);
+        }
+        console.log(`svoris, prikrautas i krepseli: ${this.prikrauta}`)
+        return this.prikrauta;
+
+    }
+}
+
+// const grybas1 = new Grybas();
+// console.log(grybas1);
+const onosKrepsys = new Krepsys();
+// console.log(onosKrepsys);
+// console.log(`grybas 1 svoris:${grybas1.svoris}`);
+// console.log(onosKrepsys.deti(grybas1));
+
+// const grybas2 = new Grybas();
+// console.log(`grybas 2 svoris: ${grybas2.svoris}`);
+// console.log(onosKrepsys.deti(grybas2));
+
+// const grybas3 = new Grybas();
+// console.log(`grybas 3 svoris: ${grybas3.svoris}`);
+// console.log(onosKrepsys.deti(grybas3));
+
+// const grybas4 = new Grybas();
+// console.log(`grybas 4 svoris: ${grybas4.svoris}`);
+// console.log(onosKrepsys.deti(grybas4));
+
+onosKrepsys.grybauti();
+
+
