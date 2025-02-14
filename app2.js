@@ -49,18 +49,16 @@ class Puodelis {
     static puodelis2;
 
     static gamintiPuodelius(){ 
-        // if (Puodelis.puodeliai.length < 0){
-        // }
+
         Puodelis.puodelis1 = new Puodelis('raudonas', 'pilnas');
         Puodelis.puodelis2 = new Puodelis ('geltonas', 'tuscias');
-        console.log(Puodelis.puodelis1);
-        console.log(Puodelis.puodelis2);
     }
 
     static perpilti(){
         if (Puodelis.puodelis1.ipilta === 'pilnas' && Puodelis.puodelis2.ipilta === 'tuscias'  ) {
             Puodelis.puodelis1.ipilta = 'tuscias';
             Puodelis.puodelis2.ipilta = 'pilnas';
+
         } else if (Puodelis.puodelis1.ipilta === 'tuscias' && Puodelis.puodelis2.ipilta === 'pilnas' ){
             Puodelis.puodelis1.ipilta = 'pilnas';
             Puodelis.puodelis2.ipilta = 'tuscias';
@@ -109,8 +107,50 @@ console.log('ipilti Abu');
 Puodelis.ipiltiIAbu();
 console.log(Puodelis.puodelis1, Puodelis.puodelis2);
 
-console.log('perpilti');
+console.log('perpilti-2');
 Puodelis.perpilti();
 console.log(Puodelis.puodelis1, Puodelis.puodelis2);
 
 
+// 3.
+// Sukurti klasę Taskas, kuris turi savybę taskas rand 100-999. 
+// Sukurti klasę Taskai, kuris turi savybe taskai, kuri yra masyvas iš 10 Taskas objektų. 
+// Sukurkite išorinį kintamąjį (nepriklausantį jokiai klasei) daugTasku, kuris yra masyvas iš 10 elementų, 
+// o kiekvienas elementas yra Taskai objektas. 
+// Išrūšiuokite masyvą daugTasku, pagal taskų sumą nuo didžiausio iki mažiausio.
+
+class Taskas {
+
+    static rand(min, max) {
+        const minCeiled = Math.ceil(min);
+        const maxFloored = Math.floor(max);
+        return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); 
+    }
+
+    constructor(){
+        this.taskas = rand(100, 999);
+    }
+
+}
+
+class Taskai {
+    constructor(){
+        this.taskai = [];
+        for(let i = 0; i < 10; i++){
+            this.taskai.push(new Taskas);
+        }
+    }
+}
+
+let naujasT = new Taskas();
+console.log(naujasT);
+
+let naujasArr = new Taskai();
+console.log(naujasArr);
+
+const daugTasku = [];
+for (let i = 0; i < 10; i++){
+    daugTasku.push(new Taskai());
+}
+
+console.log(daugTasku);
