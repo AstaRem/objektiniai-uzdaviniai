@@ -4,8 +4,9 @@
 // Sukurti vieną kibiro objektą ir pademonstruoti akmenų rinkimą į kibirą ir rezultatų išvedimą.
 console.log(`1 ---------`);
 class Kibiras1 {
-    constructor(){
+    constructor(kamDuotasKibiras = 'neaisku'){
         this.akmenuKiekis = 0;
+        this.akmenuRinkejas = kamDuotasKibiras;
     }
 
     prideti1Akmeni(){
@@ -17,11 +18,11 @@ class Kibiras1 {
     }
 
     kiekPririnktaAkmenu(){
-        console.log(`Iš viso pririnkote akmenų: ${this.akmenuKiekis}`)
+        console.log(`${this.akmenuRinkejas} - iš viso pririnko akmenų: ${this.akmenuKiekis}`)
     }
 }
 
-let jonoKibiras = new Kibiras1();
+let jonoKibiras = new Kibiras1('Jonas');
 console.log(jonoKibiras);
 
 jonoKibiras.prideti1Akmeni();
@@ -81,6 +82,7 @@ console.log(jonoPinigine.skaiciuoti());
 // Atkreipkite dėmesį, kad troleibusu važiuoti neigiamas keleivių skaičius negali.
 console.log(`3 ---------`);
 class Troleibusas{
+
     constructor(){
         this.keleiviuSkaicius = 0;
     }
@@ -96,9 +98,12 @@ class Troleibusas{
     }
 
     islipa(keleiviuSkaicius){
+        // const islipo = Math.min(this.keleiviuSkaicius, keleiviuSkaicius);   //isbandyti sita varianta
+        // this.keleiviuSkaicius -= islipo;
         if(keleiviuSkaicius > 0 && this.keleiviuSkaicius >= keleiviuSkaicius){
             this.keleiviuSkaicius -= keleiviuSkaicius;
         }else {
+            // throw new Error('Neigiamas keleivių skaičius yra neįmanomas, pasitikrinkite išlipančių keleivių kiekį.')  // tokiu budu perduodame info apie klaida kitam programuotojui, ir kodas toliau nebevykdomas.
             console.log(`Neigiamas keleivių skaičius yra neįmanomas, pasitikrinkite išlipančių keleivių kiekį.`);
             return;
         }
@@ -149,7 +154,66 @@ console.log(`---`)
 trolis2.ilipa(-10);
 trolis2.vaziuoja();
 
-// 4.
+//pasitikrinti
+try{
+    trolis2.islipa(30);
+} catch(error) {
+    console.log('Klaida' + error.message);
+}
+
+// 4. (STATIC) Sukurti metodą keleiviuSkaiciusVisuoseTroleibusuose(), kuris rodytų bendrą keleivių skaičių visuose Troleibusas objektuose. Bendram kelevių skaičiaus skaičiavimui sukurkite statinį metodą bendrasKeleiviuSkaicius(keleiviuSkaicius), kuris pridėtų arba atimtų keleivius iš statinės savybės visiKeleiviai (kurioje yra įrašytas bendras keleivių skaičius). Taip pat atitinkamai modifi kuokite metodus ilipa(keleiviuSkaicius) ir islipa(keleiviuSkaicius).
+console.log('4 ---------------------');
+class Troleibusas2 {
+
+    static visiKeleiviai = 0;
+
+    static bendrasKeleiviuSkaicius(keleiviuSkaicius){
+        this.visiKeleiviai += keleiviuSkaicius;
+    }
+
+
+    constructor(){
+        this.keleiviuSkaicius = 0;
+    }
+
+    ilipa(keleiviuSkaicius){
+            this.keleiviuSkaicius += keleiviuSkaicius;
+            this.constructor.bendrasKeleiviuSkaicius(keleiviuSkaicius);
+    }
+
+    islipa(keleiviuSkaicius){
+        const islipo = Math.min(this.keleiviuSkaicius, keleiviuSkaicius);   
+        this.keleiviuSkaicius -= islipo;
+        this.constructor.bendrasKeleiviuSkaicius(-islipo);
+    }
+
+    vaziuoja(){
+        console.log(`Važiuojancių troleibusu keleivių skaičius: ${this.keleiviuSkaicius}`);
+    }
+
+}
+
+const trol11 = new Troleibusas2();
+const trol12 = new Troleibusas2();
+const trol13 = new Troleibusas2();
+
+trol11.ilipa(1);
+trol12.ilipa(10);
+trol13.ilipa(20);
+
+trol11.islipa(2);
+trol12.islipa(2);
+trol13.islipa(2);
+
+
+
+trol11.vaziuoja();
+trol12.vaziuoja();
+trol13.vaziuoja();
+
+console.log(Troleibusas2.visiKeleiviai);
+
+
 // 5. 
 // 6. Patobulinti 2 uždavinio piniginę taip, kad būtų galima skaičiuoti kiek piniginėje yra monetų ir kiek banknotų. 
 // Parašyti metodą monetos(), kuris skaičiuotų kiek yra piniginėje monetų ir metoda banknotai() - popierinių pinigų skaičiavimui. 
@@ -200,7 +264,52 @@ console.log(onosPinigine.skaiciuoti()); //23
 console.log(onosPinigine.monetos()); //3
 console.log(onosPinigine.banknotai()); //2
 
-// 7. 
+// 7. (STATIC) Klasėje Kibiras1 (pirmas uždavinys) sukurti metodą akmenuSkaiciusVisuoseKibiruose(), kuris rodytų bendrą visuose kibiruose pririnktų akmenų kiekį (visuose sukurtuose Kibiras objektuose). Skaičiuoti akmenim, kurie buvo surinkti visuose objektuose, naudokite statinę savybę visiAkmenys (kurioje yra įrašytas ir saugomas bendras akmenų skaičius). Taip pat atitinkamai modifi kuokite metodus prideti1Akmeni(), pridetiDaugAkmenu(kiekis).
+console.log ('7 -----------------------');
+
+class Kibiras2 {
+
+    static visiAkmenys = 0;
+    
+    static akmenuSkaiciusVisuoseKibiruose(kiekis){
+        this.visiAkmenys += kiekis;
+    }
+
+    constructor(kamDuotasKibiras = 'neaisku'){
+        this.akmenuKiekis = 0;
+        this.akmenuRinkejas = kamDuotasKibiras;
+    }
+
+    prideti1Akmeni(){
+        this.akmenuKiekis += 1
+        this.constructor.akmenuSkaiciusVisuoseKibiruose(1);
+
+    }
+
+    pridetiDaugAkmenu(kiekis){
+        this.akmenuKiekis += kiekis;
+        this.constructor.akmenuSkaiciusVisuoseKibiruose(kiekis);
+    }
+
+    kiekPririnktaAkmenu(){
+        console.log(`${this.akmenuRinkejas} - iš viso pririnko akmenų: ${this.akmenuKiekis}`)
+    }
+}
+
+const arnoKibiras = new Kibiras2('Arnas');
+const linosKibiras = new Kibiras2('Lina');
+const lukoKibiras = new Kibiras2('Lukas');
+
+arnoKibiras.prideti1Akmeni();
+linosKibiras.pridetiDaugAkmenu(2);
+lukoKibiras.pridetiDaugAkmenu(10);
+
+arnoKibiras.kiekPririnktaAkmenu();
+linosKibiras.kiekPririnktaAkmenu();
+lukoKibiras.kiekPririnktaAkmenu();
+
+console.log(Kibiras2.visiAkmenys);
+
 
 // 8. Sukurti klasę Stikline. 
 // Sukurti savybes turis ir kiekis. 
@@ -224,20 +333,20 @@ class Stikline{
     ipilti(kiekis){
             this.kiekis += kiekis;
             this.kiekis <= this.turis ? this.kiekis  : this.kiekis = this.turis;
-            console.log(`įpylėme: ${kiekis}, stiklines turis yra ${this.turis}, todel viso yra ${this.kiekis}`);
+            // console.log(`įpylėme: ${kiekis}, stiklines turis yra ${this.turis}, todel viso yra ${this.kiekis}`);
         return this.kiekis;
     }
 
     ispilti(){
         this.ispilta = this.kiekis;
         this.kiekis = 0; //stikline tuscia
-        console.log(`išpylėme: ${this.ispilta}`);
+        // console.log(`išpylėme: ${this.ispilta}`);
         return this.ispilta;
 
     }
 
     stiklinejeYra(){
-        console.log(`kiekis likes stiklineje: ${this.kiekis}`)
+        // console.log(`kiekis likes stiklineje: ${this.kiekis}`)
         return this.kiekis;
     }
 }
@@ -259,22 +368,22 @@ stiklineTest.stiklinejeYra();
 
 
 const stikline1 = new Stikline(200);
-console.log(stikline1);
+// console.log(stikline1);
 stikline1.ipilti(200);
 const ispylemIs1 = stikline1.ispilti();
-console.log(`ispylem is stikline1: ${ispylemIs1}`);
+// console.log(`ispylem is stikline1: ${ispylemIs1}`);
 
 const stikline2 = new Stikline(150);
-console.log(stikline2);
+// console.log(stikline2);
 stikline2.ipilti(ispylemIs1);
 const ispylemIs2 = stikline2.ispilti();
-console.log(`ispylem is stikline2: ${ispylemIs2}`);
+// console.log(`ispylem is stikline2: ${ispylemIs2}`);
 
 const stikline3 = new Stikline(100);
-console.log(stikline3);
+// console.log(stikline3);
 stikline3.ipilti(ispylemIs2);
 const ispylemIs3 = stikline3.ispilti();
-console.log(`ispylem is stikline3: ${ispylemIs3}`);
+// console.log(`ispylem is stikline3: ${ispylemIs3}`);
 
 // 9. Sukurti klasę Grybas. 
 // Sukurti klasę Krepsys. 
@@ -298,11 +407,11 @@ function randomBoolean(){
     return Math.random() <= 0.5 ? true : false;
 }
 
-console.log(randomBoolean());
-console.log(randomBoolean());
-console.log(randomBoolean());
-console.log(randomBoolean());
-console.log(randomBoolean());
+// console.log(randomBoolean());
+// console.log(randomBoolean());
+// console.log(randomBoolean());
+// console.log(randomBoolean());
+// console.log(randomBoolean());
 
 class Grybas {
     constructor(){
@@ -322,15 +431,15 @@ class Krepsys {
     deti(grybas){
         // this.grybas = grybas;
         // console.log(this.grybas);
-    console.log(`Grybas valgomas:${grybas.valgomas} ir sukirmijes: ${grybas.sukirmijes}, jo svoris: ${grybas.svoris}`);
+    // console.log(`Grybas valgomas:${grybas.valgomas} ir sukirmijes: ${grybas.sukirmijes}, jo svoris: ${grybas.svoris}`);
         if(grybas.valgomas && !grybas.sukirmijes) {
-            console.log(`dedam i krepseli`)
+            // console.log(`dedam i krepseli`)
             this.prikrauta += grybas.svoris;
-            console.log(this.prikrauta);
+            // console.log(this.prikrauta);
         } else {
-            console.log(`netinka`)
+            // console.log(`netinka`)
         }
-        console.log(`svoris krepselyje: ${this.prikrauta}`)
+        // console.log(`svoris krepselyje: ${this.prikrauta}`)
         return this.prikrauta;
     }
 
@@ -339,7 +448,7 @@ class Krepsys {
             const grybas = new Grybas();
             this.deti(grybas);
         }
-        console.log(`svoris, prikrautas i krepseli: ${this.prikrauta}`)
+        // console.log(`svoris, prikrautas i krepseli: ${this.prikrauta}`)
         return this.prikrauta;
 
     }
@@ -366,4 +475,4 @@ const onosKrepsys = new Krepsys();
 
 onosKrepsys.grybauti();
 
-
+console.clear()
