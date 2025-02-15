@@ -117,8 +117,7 @@ console.log(Puodelis.puodelis1, Puodelis.puodelis2);
 // Sukurti klasę Taskai, kuris turi savybe taskai, kuri yra masyvas iš 10 Taskas objektų. 
 // Sukurkite išorinį kintamąjį (nepriklausantį jokiai klasei) daugTasku, kuris yra masyvas iš 10 elementų, 
 // o kiekvienas elementas yra Taskai objektas. 
-// Išrūšiuokite masyvą daugTasku, pagal taskų sumą nuo didžiausio iki mažiausio.
-
+console.log('3 -------------------------')
 class Taskas {
 
     static rand(min, max) {
@@ -128,7 +127,7 @@ class Taskas {
     }
 
     constructor(){
-        this.taskas = rand(100, 999);
+        this.taskas = Taskas.rand(100, 999);
     }
 
 }
@@ -147,10 +146,53 @@ console.log(naujasT);
 
 let naujasArr = new Taskai();
 console.log(naujasArr);
+console.log(typeof naujasArr);
 
 const daugTasku = [];
 for (let i = 0; i < 10; i++){
     daugTasku.push(new Taskai());
 }
 
+
 console.log(daugTasku);
+console.log(typeof daugTasku)
+console.log(typeof naujasT)
+console.log(typeof naujasArr)
+
+let firstTaskai = daugTasku[0]; // Take the first Taskai object
+console.log(firstTaskai); // See its structure
+
+// Calculate the sum of all taskas values inside firstTaskai
+let sum = firstTaskai.taskai.reduce((total, task) => total + task.taskas, 0);
+console.log("Sum of first Taskai:", sum);
+
+
+daugTasku.sort((a, b)=> {
+    let sumA = a.taskai.reduce((total, task) => total + task.taskas, 0);
+    let sumB= b.taskai.reduce((total, task) => total + task.taskas, 0);
+
+    return sumB - sumA;
+
+});
+
+console.log(`After sorting:`);
+daugTasku.forEach((taskaiObj, index) => {
+    let sum = taskaiObj.taskai.reduce((total,task) => total + task.taskas, 0);
+    console.log(`Taskai objektas ${index + 1} - sum ${sum} `);
+})
+// let newArray = []
+
+// for (let i = 0; i < daugTasku.length; i++ ){
+//     // console.log(daugTasku[i]);
+//     // console.log(typeof daugTasku[i])
+//     for (let taskas in daugTasku[i]){ //Taskai
+//         total = 0;
+//         console.log(daugTasku[i][taskas]);
+//         total += daugTasku[i][taskas];
+//     }
+//         newArray.push(total);
+//     // daugTasku[i].reduce((a, b) => a + b, 0);
+// }
+
+// console.log(daugTasku);
+// console.log(newArray);;
